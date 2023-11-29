@@ -29,12 +29,16 @@
 
 import os
 import json
+import debugpy
 
 from poselib.skeleton.skeleton3d import SkeletonTree, SkeletonState, SkeletonMotion
 from poselib.visualization.common import plot_skeleton_state, plot_skeleton_motion_interactive
 
 # source fbx file path
-fbx_file = "data/615.fbx"
+debugpy.listen(('localhost', 5678))
+fbx_file = "data/07_01_cmu.fbx"
+
+
 
 # import fbx file - make sure to provide a valid joint name for root_joint
 motion = SkeletonMotion.from_fbx(
@@ -43,8 +47,9 @@ motion = SkeletonMotion.from_fbx(
     fps=60
 )
 
+
 # save motion in npy format
-motion.to_file("data/humanoid_shoot.npy")
+motion.to_file("data/test4.npy")
 
 # visualize motion
 plot_skeleton_motion_interactive(motion)

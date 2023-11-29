@@ -30,6 +30,8 @@
 import numpy as np
 import os
 import torch
+import debugpy 
+
 
 from isaacgym import gymtorch
 from isaacgym import gymapi
@@ -50,7 +52,9 @@ class HumanoidAMPBase(VecTask):
 
     def __init__(self, config, rl_device, sim_device, graphics_device_id, headless, virtual_screen_capture, force_render):
         self.cfg = config
-
+        #debug
+        debugpy.listen(('localhost', 5678))
+        
         self._pd_control = self.cfg["env"]["pdControl"]
         self.power_scale = self.cfg["env"]["powerScale"]
         self.randomize = self.cfg["task"]["randomize"]
@@ -207,6 +211,9 @@ class HumanoidAMPBase(VecTask):
 
         start_pose = gymapi.Transform()
         start_pose.p = gymapi.Vec3(*get_axis_params(0.89, self.up_axis_idx))
+        #start_pose.p = gymapi.Vec3(0,0,0)
+        #for debug
+        #print('start position is', start_pose.z)
         start_pose.r = gymapi.Quat(0.0, 0.0, 0.0, 1.0)
 
         self.start_rotation = torch.tensor([start_pose.r.x, start_pose.r.y, start_pose.r.z, start_pose.r.w], device=self.device)
@@ -530,6 +537,7 @@ def compute_humanoid_observations(root_states, dof_pos, dof_vel, key_body_pos, l
 @torch.jit.script
 def compute_humanoid_reward(obs_buf):
     # type: (Tensor) -> Tensor
+    # TODO : make reward function
     reward = torch.ones_like(obs_buf[:, 0])
     return reward
 

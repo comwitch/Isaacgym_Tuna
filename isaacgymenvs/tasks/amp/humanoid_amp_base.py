@@ -211,8 +211,6 @@ class HumanoidAMPBase(VecTask):
 
         start_pose = gymapi.Transform()
         start_pose.p = gymapi.Vec3(*get_axis_params(0.89, self.up_axis_idx))
-        #start_pose.p = gymapi.Vec3(0,0,0)
-        #for debug
         #print('start position is', start_pose.z)
         start_pose.r = gymapi.Quat(0.0, 0.0, 0.0, 1.0)
 
